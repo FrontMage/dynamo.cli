@@ -1,0 +1,8 @@
+tasks:
+  install:
+    cmds:
+      - 'go install'
+  release:
+    cmds:
+      - 'bash ./release.sh'
+version: 1
