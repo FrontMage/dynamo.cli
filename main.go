@@ -11,7 +11,6 @@ import (
 	"dynamo.cli/executors"
 	"dynamo.cli/sqlparser"
 	"dynamo.cli/tables"
-	// "github.com/bcicen/grmon"
 	"github.com/briandowns/spinner"
 	prompt "github.com/c-bata/go-prompt"
 	"golang.org/x/net/context"

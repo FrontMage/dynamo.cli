@@ -114,9 +114,9 @@ func switchCondition(condition, nextLogicalOperator string) Condition {
 		if strings.Contains(condition, op) {
 			tokens := strings.Split(condition, op)
 			return Condition{
-				Key:                 tokens[0],
+				Key:                 strings.TrimSpace(tokens[0]),
 				Operator:            op,
-				Value:               tokens[1],
+				Value:               strings.TrimSpace(tokens[1]),
 				NextLogicalOperator: nextLogicalOperator,
 			}
 		}
