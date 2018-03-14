@@ -36,21 +36,22 @@ func sqlRunner(sql string, resultCh chan string, errCh chan error) (chan string,
 		} else {
 			errCh <- err
 		}
-	}
-	if sqlparser.DescRegexp.MatchString(sql) && sqlparser.TableRegexp.MatchString(sql) {
+	} else if sqlparser.DescRegexp.MatchString(sql) && sqlparser.TableRegexp.MatchString(sql) {
 		if r, err := executors.DescribeTable(sql + " END"); err == nil {
 			resultCh <- r
 		} else {
 			errCh <- err
 		}
-	}
-	// TODO require WHERE field, update all seems not so safe?
-	if sqlparser.UpdateRegexp.MatchString(sql) {
+	} else if sqlparser.UpdateRegexp.MatchString(sql) {
+		// TODO require WHERE field, update all seems not so safe?
 		if r, err := executors.Update(sql + " END"); err == nil {
 			resultCh <- r
 		} else {
 			errCh <- err
 		}
+	} else {
+		resultCh <- ""
+		errCh <- nil
 	}
 	// TODO support SHOW TABLE
 	return resultCh, errCh

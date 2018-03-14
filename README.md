@@ -91,3 +91,7 @@ Which will be handy when that pm tells you to change somebody's coins to 2^10.
 ##### Road Map
 
 Mostly all that `TODO` in the code, and tell others about this project.
+
+Apparently from the go report page, there is quiet a lot things to fix, but not sure should fix that.
+
+Better error handle, for example if a SQL is invalid, should suggest what's wrong.
