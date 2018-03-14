@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/FrontMage/dynamo.cli)](https://goreportcard.com/report/github.com/FrontMage/dynamo.cli)
+
 ### A sql like command line prompt for AWS DynamoDB
 
 ---

@@ -48,7 +48,7 @@ const (
 
 var ops = []string{opGtEq, opLtEq, opNeq, OpEq, opGt, opLt, opLike}
 
-// SelectStatement holds all key infomation parsed from a sql select statement
+// SelectStatement holds all key information parsed from a sql select statement
 // SelectStatement AttributesToGet is the part between SELECT and FROM
 // SelectStatement Conditions is the part between WHERE and LIMIT or END
 type SelectStatement struct {
@@ -58,7 +58,7 @@ type SelectStatement struct {
 	Limit           int64
 }
 
-// UpdateStatement holds all key infomation parsed from a sql select statement
+// UpdateStatement holds all key information parsed from a sql select statement
 // UpdateStatement AttributesToGet is the part between RETRUNING and END
 // UpdateStatement Conditions is the part between WHERE and RETRUNING or END
 type UpdateStatement struct {
@@ -80,7 +80,7 @@ type Condition struct {
 	NextLogicalOperator string
 }
 
-// DescTableStatement holds all key infomation parsed from a sql describe table statement
+// DescTableStatement holds all key information parsed from a sql describe table statement
 // DescTableStatement which is the table name between TALBE and END
 type DescTableStatement struct {
 	TableName string
@@ -131,12 +131,12 @@ func switchCondition(condition, nextLogicalOperator string) Condition {
 
 // ParseSelect parse a select sql statement to go struct
 // ParseSelect can only parse select, other statement will go wrong
-func ParseSelect(selectSql string) SelectStatement {
+func ParseSelect(selectSQL string) SelectStatement {
 	// TODO trim all space
-	attributesToGetStr := killAllKeyWords(selectStmtRegexp.FindString(selectSql))
-	tableName := killAllKeyWords(FromStmtRegexp.FindString(selectSql))
-	conditionStr := killAllKeyWords(WhereStmtRegexp.FindString(selectSql))
-	limitStr := killAllKeyWords(LimitStmtRegexp.FindString(selectSql))
+	attributesToGetStr := killAllKeyWords(selectStmtRegexp.FindString(selectSQL))
+	tableName := killAllKeyWords(FromStmtRegexp.FindString(selectSQL))
+	conditionStr := killAllKeyWords(WhereStmtRegexp.FindString(selectSQL))
+	limitStr := killAllKeyWords(LimitStmtRegexp.FindString(selectSQL))
 	// TODO support OFFSET
 
 	// TODO match OR
@@ -162,6 +162,7 @@ func ParseSelect(selectSql string) SelectStatement {
 	return stmt
 }
 
+// ParseUpdate parse an update SQL string to UpdateStatement, mainly just extract tokens
 func ParseUpdate(updateSQL string) UpdateStatement {
 	attributesToGetStr := killAllKeyWords(returningStmtRegexp.FindString(updateSQL))
 	updateStr := killAllKeyWords(setStmtRegexp.FindString(updateSQL))
@@ -190,6 +191,7 @@ func ParseUpdate(updateSQL string) UpdateStatement {
 	return stmt
 }
 
+// ParseDescTable parse a describe table SQL string to DescTableStatement, extract table name
 func ParseDescTable(descTableSQL string) DescTableStatement {
 	return DescTableStatement{
 		TableName: killAllKeyWords(TableStmtRegexp.FindString(descTableSQL)),
