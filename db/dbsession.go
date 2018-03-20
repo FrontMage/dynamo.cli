@@ -23,7 +23,7 @@ func GetDynamoSession(accessKeyID, secretAccessKey, region string) *dynamodb.Dyn
 	return DynamoDB
 }
 
-// ListTables returns all table names from dynamoDB
+// ListTable returns all table names from dynamoDB
 func ListTable(receiver []*string, lastEvaluatedTableName *string) ([]*string, error) {
 	if result, err := DynamoDB.ListTables(&dynamodb.ListTablesInput{
 		ExclusiveStartTableName: lastEvaluatedTableName,

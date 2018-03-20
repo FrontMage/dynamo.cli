@@ -17,7 +17,7 @@ import (
 	cli "gopkg.in/urfave/cli.v2"
 )
 
-// TODO better suggest
+// TODO better suggest, suggest based on hash key and range key
 var tableNameSuggestions []prompt.Suggest
 
 // Key bindings, reserved, might use them oneday
@@ -71,16 +71,13 @@ func executor(in string) {
 
 		ctx, cancel := context.WithCancel(context.Background())
 		sigCh := make(chan os.Signal, 1)
-		signal.Notify(sigCh, os.Interrupt)
+		signal.Notify(sigCh, os.Interrupt) // sigCh only listens to os.Interrupt
 		// Listen to the os interrupt signal which is ctrl+c
 		// when ctrl+c is pressed, cancel current query
-		// killSigCh for notify this goroutine to terminate, otherwise it will keep listening
-		killSigCh := make(chan struct{}, 1)
 		go func() {
 			select {
 			case <-sigCh:
 				cancel()
-			case <-killSigCh:
 				return
 			}
 		}()
@@ -93,13 +90,10 @@ func executor(in string) {
 		// so that new prompts won't popup
 		select {
 		case <-ctx.Done():
-			killSigCh <- struct{}{}
 			return
 		case r := <-resultCh:
-			killSigCh <- struct{}{}
 			fmt.Println(r)
 		case e := <-errCh:
-			killSigCh <- struct{}{}
 			fmt.Println(e)
 		}
 	}
@@ -179,6 +173,7 @@ func completer(d prompt.Document) []prompt.Suggest {
 
 func main() {
 	// grmon.Start()
+	defer recover()
 	var accessKeyID string
 	var secretAccessKey string
 	var region string
@@ -235,5 +230,4 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		fmt.Println(err.Error())
 	}
-	defer recover()
 }
