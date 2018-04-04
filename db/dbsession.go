@@ -12,7 +12,7 @@ var DynamoDB *dynamodb.DynamoDB
 
 // GetDynamoSession returns a new dynamodb session
 func GetDynamoSession(accessKeyID, secretAccessKey, region string) *dynamodb.DynamoDB {
-	session_config := session.Options{}
+	sessionConfig := session.Options{}
 	if accessKeyID != "" || secretAccessKey != "" {
 		token := ""
 		creds := credentials.NewStaticCredentials(accessKeyID, secretAccessKey, token)
@@ -20,17 +20,17 @@ func GetDynamoSession(accessKeyID, secretAccessKey, region string) *dynamodb.Dyn
 		if err != nil {
 			panic(err)
 		}
-		session_config.Config.Credentials = creds
+		sessionConfig.Config.Credentials = creds
 	}
 
 	if region != "" {
-		session_config.Config.Region = &region
+		sessionConfig.Config.Region = &region
 	} else {
-		session_config.SharedConfigState = session.SharedConfigEnable
+		sessionConfig.SharedConfigState = session.SharedConfigEnable
 	}
 
-	session, err := session.NewSessionWithOptions(session_config)
-	if err != nil{
+	session, err := session.NewSessionWithOptions(sessionConfig)
+	if err != nil {
 		panic(err)
 	}
 	DynamoDB = dynamodb.New(session)
