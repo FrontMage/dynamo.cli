@@ -213,12 +213,8 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			if region == "" {
-				fmt.Println("Must provide aws config region")
-			} else if accessKeyID == "" {
-				fmt.Println("Must provide aws config access key id")
-			} else if secretAccessKey == "" {
-				fmt.Println("Must provide aws config secret access key")
+			if !((accessKeyID == "" && secretAccessKey == "") || (accessKeyID != "" && secretAccessKey != "")){
+				fmt.Println("Must provide access key id and secret access key at the same time")
 			} else {
 				db.GetDynamoSession(accessKeyID, secretAccessKey, region)
 				runPrompt(tablePrefix)
