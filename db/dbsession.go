@@ -11,14 +11,14 @@ import (
 var DynamoDB *dynamodb.DynamoDB
 
 // GetDynamoSession returns a new dynamodb session
-func GetDynamoSession(accessKeyID, secretAccessKey, region string) *dynamodb.DynamoDB {
+func GetDynamoSession(accessKeyID, secretAccessKey, region string) (*dynamodb.DynamoDB, error) {
 	sessionConfig := session.Options{}
 	if accessKeyID != "" || secretAccessKey != "" {
 		token := ""
 		creds := credentials.NewStaticCredentials(accessKeyID, secretAccessKey, token)
 		_, err := creds.Get()
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		sessionConfig.Config.Credentials = creds
 	}
@@ -31,10 +31,10 @@ func GetDynamoSession(accessKeyID, secretAccessKey, region string) *dynamodb.Dyn
 
 	session, err := session.NewSessionWithOptions(sessionConfig)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	DynamoDB = dynamodb.New(session)
-	return DynamoDB
+	return DynamoDB, nil
 }
 
 // ListTable returns all table names from dynamoDB
