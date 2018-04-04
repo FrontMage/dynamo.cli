@@ -60,6 +60,7 @@ func sqlRunner(sql string, resultCh chan string, errCh chan error) (chan string,
 // executor executes command and print the output.
 func executor(in string) {
 	s := strings.TrimSpace(in)
+	s = strings.TrimSuffix(in, ";")
 	if s == "" {
 		return
 	} else if s == "quit" || s == "exit" {
