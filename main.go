@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/signal"
@@ -213,13 +214,14 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			if !((accessKeyID == "" && secretAccessKey == "") || (accessKeyID != "" && secretAccessKey != "")){
-				fmt.Println("Must provide access key id and secret access key at the same time")
-			} else {
-				db.GetDynamoSession(accessKeyID, secretAccessKey, region)
+			if !((accessKeyID == "" && secretAccessKey == "") || (accessKeyID != "" && secretAccessKey != "")) {
+				return errors.New("Must provide access key id and secret access key at the same time")
+			} else if _, err := db.GetDynamoSession(accessKeyID, secretAccessKey, region); err == nil {
 				runPrompt(tablePrefix)
+				return nil
+			} else {
+				return err
 			}
-			return nil
 		},
 	}
 
