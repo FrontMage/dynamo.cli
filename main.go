@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/signal"
@@ -214,17 +215,14 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			if region == "" {
-				fmt.Println("Must provide aws config region")
-			} else if accessKeyID == "" {
-				fmt.Println("Must provide aws config access key id")
-			} else if secretAccessKey == "" {
-				fmt.Println("Must provide aws config secret access key")
-			} else {
-				db.GetDynamoSession(accessKeyID, secretAccessKey, region)
+			if !((accessKeyID == "" && secretAccessKey == "") || (accessKeyID != "" && secretAccessKey != "")) {
+				return errors.New("Must provide access key id and secret access key at the same time")
+			} else if _, err := db.GetDynamoSession(accessKeyID, secretAccessKey, region); err == nil {
 				runPrompt(tablePrefix)
+				return nil
+			} else {
+				return err
 			}
-			return nil
 		},
 	}
 

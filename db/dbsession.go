@@ -11,16 +11,30 @@ import (
 var DynamoDB *dynamodb.DynamoDB
 
 // GetDynamoSession returns a new dynamodb session
-func GetDynamoSession(accessKeyID, secretAccessKey, region string) *dynamodb.DynamoDB {
-	token := ""
-	creds := credentials.NewStaticCredentials(accessKeyID, secretAccessKey, token)
-	_, err := creds.Get()
-	if err != nil {
-		panic(err)
+func GetDynamoSession(accessKeyID, secretAccessKey, region string) (*dynamodb.DynamoDB, error) {
+	sessionConfig := session.Options{}
+	if accessKeyID != "" || secretAccessKey != "" {
+		token := ""
+		creds := credentials.NewStaticCredentials(accessKeyID, secretAccessKey, token)
+		_, err := creds.Get()
+		if err != nil {
+			return nil, err
+		}
+		sessionConfig.Config.Credentials = creds
 	}
 
-	DynamoDB = dynamodb.New(session.New(&aws.Config{Region: &region}))
-	return DynamoDB
+	if region != "" {
+		sessionConfig.Config.Region = &region
+	} else {
+		sessionConfig.SharedConfigState = session.SharedConfigEnable
+	}
+
+	session, err := session.NewSessionWithOptions(sessionConfig)
+	if err != nil {
+		return nil, err
+	}
+	DynamoDB = dynamodb.New(session)
+	return DynamoDB, nil
 }
 
 // ListTable returns all table names from dynamoDB
