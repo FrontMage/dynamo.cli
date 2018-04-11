@@ -39,6 +39,10 @@ GLOBAL OPTIONS:
 
 ### Install
 
+##### Install from go get
+
+`go get github.com/FrontMage/dynamo.cli`
+
 ##### Install from source
 
 Note this method requires [dep](https://github.com/golang/dep) command installed.

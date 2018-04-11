@@ -183,7 +183,7 @@ func main() {
 	app := &cli.App{
 		Name:    "dynamo.cli",
 		Usage:   "DynamoDB command line prompt",
-		Version: "0.1.0",
+		Version: "0.1.1",
 		Authors: []*cli.Author{&cli.Author{
 			Name:  "xinbg",
 			Email: "xbgxwh@outlook.com",
