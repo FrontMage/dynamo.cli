@@ -3,9 +3,9 @@ package executors
 import (
 	"errors"
 
-	"dynamo.cli/db"
-	"dynamo.cli/sqlparser"
-	"dynamo.cli/utils"
+	"github.com/FrontMage/dynamo.cli/db"
+	"github.com/FrontMage/dynamo.cli/sqlparser"
+	"github.com/FrontMage/dynamo.cli/utils"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"

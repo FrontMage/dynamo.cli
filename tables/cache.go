@@ -3,7 +3,7 @@ package tables
 import (
 	"sync"
 
-	"dynamo.cli/db"
+	"github.com/FrontMage/dynamo.cli/db"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
 

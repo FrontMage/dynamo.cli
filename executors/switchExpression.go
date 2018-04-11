@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"dynamo.cli/sqlparser"
+	"github.com/FrontMage/dynamo.cli/sqlparser"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 )
 

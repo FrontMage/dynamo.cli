@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"dynamo.cli/sqlparser"
-	"dynamo.cli/tables"
+	"github.com/FrontMage/dynamo.cli/sqlparser"
+	"github.com/FrontMage/dynamo.cli/tables"
 )
 
 // DescribeTable returns the basic info to describe the given table
